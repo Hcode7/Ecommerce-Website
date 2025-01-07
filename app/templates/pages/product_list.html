@@ -1,0 +1,46 @@
+{% extends 'pages/base.html' %}
+
+
+{% block content %}
+
+<style>
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: none;
+        color: black;
+
+    }
+</style>
+<br>
+<div class="container">
+    <div class="form">
+        <form action="" method="get">
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-warning">Filter</button>
+        </form>
+    </div>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-sm-4">
+            <a class="text-decoration-none" href="{% url 'product_detail' product.slug %}">
+                <div class="card" style="width: 20rem;">
+                    <img src="{{ product.img.url }}" class="card-img-top" alt="{{ product.title }}">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>{{ product.title }}</h3>
+                        </div>
+                        <span><b>${{ product.price }}</b></span>
+                    </div>
+                    <a class="btn btn-primary" href="{% url 'product_detail' product.slug %}">Add to cart</a>
+                    
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

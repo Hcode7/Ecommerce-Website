@@ -1,0 +1,28 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Address</th>
+                    <th>Complete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for delivery in delivery %}
+                    <tr>
+                        <td>{{ delivery.orderitem.product.title }}</td>
+                        <td>{{ delivery.shipping_address }}</td>
+                        <td>{{ delivery.complete }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

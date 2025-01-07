@@ -1,0 +1,57 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    .card {
+    min-height: 400px; /* Ensures consistent card height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card-title h3 {
+    font-size: 1.25rem;
+    text-align: center;
+}
+.card-footer {
+    text-align: center;
+}
+
+</style>
+
+<div class="vh-90 d-flex align-items-center justify-content-center text-white position-relative mt-5" style="background: black">
+    <div class="text-center">
+        <h1 class="display-2 mb-3">Elevate Your Style</h1>
+        <p class="fs-3 mb-4">Discover the latest fashion trends</p>
+        <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3">Shop Now</a>
+      </div>
+</div>
+<br>
+<div class="container">
+    <div class="row">
+        {% for product in products %}
+        <a class="text-decoration-none" href="{% url 'product_detail' product.slug %}">
+        <div class="col-md-4 mb-4 h-100">
+                <div class="card d-flex flex-column h-100" style="width: 20rem;">
+                    <img src="{{ product.img.url }}" class="card-img-top"  alt="{{ product.title }}">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3 class="">{{ product.title }}</h3>
+                        </div>
+                        <span class="lead">${{ product.price }}</span>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" href="{% url 'add_cart' product.slug %}">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

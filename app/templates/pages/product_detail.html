@@ -1,0 +1,24 @@
+{% extends 'pages/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <dov class="row  align-items-center">
+        <div class="col-sm-6">
+            <img src="{{ product.img.url }}" class="card-img-top" alt="{{ product.title }}">
+        </div>
+        <div class="col-sm-6">
+            <h3>{{ product.title }}</h3>
+            <hr>
+            <p class="lead">{{ product.description }}</p>
+            <span><h4>${{ product.price }}</h4></span>
+            <br>
+            <div class="">
+                <a href="{% url 'add_cart' product.slug %}" class="btn btn-lg btn-primary">Add to cart</a>
+            </div>
+        </div>
+    </dov>
+</div>
+
+{% endblock content %}

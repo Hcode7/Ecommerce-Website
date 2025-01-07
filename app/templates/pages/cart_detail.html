@@ -1,0 +1,134 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+
+<style>
+  .cart-container {
+    padding: 15px;
+  }
+
+  .checkout-btn-container {
+    margin: 15px 0;
+    text-align: center;
+  }
+
+  .cart-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .product-img {
+    width: 90px;
+    height: auto;
+  }
+
+  .quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .small-input {
+    width: 60px;
+    text-align: center;
+    font-size: 0.875rem;
+    padding: 0.25rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }
+
+  .update-btn {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 4px;
+  }
+
+  .update-btn:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .cart-table {
+      display: block;
+    }
+    
+    .cart-table thead {
+      display: none;
+    }
+    
+    .cart-table tbody tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 15px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .cart-table td, 
+    .cart-table th {
+      display: block;
+      border: none;
+      text-align: center;
+    }
+
+    .cart-table td:first-child {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+
+    .product-img {
+      width: 100%;
+      max-width: 120px;
+    }
+  }
+</style>
+
+
+<div class="cart-container">
+  <div class="checkout-btn-container">
+    <a href="{% url 'checkout'  %}" class="btn btn-lg btn-warning">Checkout</a>
+  </div>
+
+  <div class="cart-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Title</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cart_item in cart_item %}
+        <tr>
+          <td>
+            <img class="product-img" src="{{ cart_item.product.img.url }}" alt="{{ cart_item.product.title }}">
+          </td>
+          <th scope="row">{{ cart_item.product.title }}</th>
+          <td>
+            <form class="quantity-form" action="{% url 'update_cart' cart_item.id %}" method="post">
+              {% csrf_token %}
+              <input class="small-input" type="number" name="quantity" value="{{ cart_item.quantity }}" min="1">
+              <button type="submit" class="btn update-btn">Update</button>
+            </form>
+          </td>
+          <td>${{ cart_item.total_price }}</td>
+          <td><a href="{% url 'remove_cart' cart_item.id %}" class="btn btn-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}
+
+
