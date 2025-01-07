@@ -82,16 +82,14 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'project',
-        'USER': 'root', 
-        'PASSWORD': 'Amine@123ratit',
-        'HOST': 'localhost',   
-        'PORT': '3306', 
-    }
+        'ENGINE': 'django_cockroachdb',  # The CockroachDB engine for Django
+        'NAME': 'defaultdb',  # Your database name
+        'USER': 'project',  # Your username
+        'PASSWORD': 'agP-0IX-9l12QtbGZB3ALQ',  # Your password
+        'HOST': 'elfin-shade-4037.jxf.gcp-europe-west1.cockroachlabs.cloud',  # CockroachDB host
+        'PORT': '26257',  # CockroachDB port
+    },
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
