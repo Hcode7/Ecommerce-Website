@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%tb7u()&ahe)&5o7e772qm!lv-t@sug-o=y7_$-1j-atb1z381
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['ecommerce-website-django-lac.vercel.app']
 
 
 # Application definition
@@ -76,6 +76,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
