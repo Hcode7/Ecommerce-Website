@@ -25,7 +25,6 @@ SECRET_KEY = 'django-insecure-%tb7u()&ahe)&5o7e772qm!lv-t@sug-o=y7_$-1j-atb1z381
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ecommerce-website-django-lac.vercel.app']
 
 
 # Application definition
@@ -45,7 +44,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,40 +74,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_cockroachdb',  # The CockroachDB engine for Django
-        'NAME': 'defaultdb',  # Your database name
-        'USER': 'project',  # Your username
-        'PASSWORD': 'agP-0IX-9l12QtbGZB3ALQ',  # Your password
-        'HOST': 'elfin-shade-4037.jxf.gcp-europe-west1.cockroachlabs.cloud',  # CockroachDB host
-        'PORT': '26257',  # CockroachDB port
-    },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-import pymysql
-pymysql.install_as_MySQLdb()
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -153,7 +129,6 @@ MEDIA_URL = 'media/'
 
 MEDIA_ROOT = 'media'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
