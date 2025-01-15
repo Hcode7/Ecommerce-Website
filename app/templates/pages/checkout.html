@@ -3,12 +3,39 @@
 
 
 {% block content %}
-
+<br>
 <div class="form">
-    <form action="" method="post">
+    <form action="" class="space-y-4 max-w-md mx-auto p-4 bg-white shadow rounded" method="post">
         {% csrf_token %}
-        {{ form|crispy }}    
-        <button type="submit" class="btn btn-warning">Checkout</button>
+        <label for="first_name">First Name</label>
+        <input type="text" name="first_name" id="first_name" class="block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 "> 
+
+        <label for="last_name">Last Name</label>
+        <input type="text" name="last_name" id="last_name" class="block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ">
+
+        <label for="phone">Phone</label>
+        <input type="text" name="phone" class="block w-full rounded-md border border-gray-200 focus:outline-none p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+        <label for="email">Email</label>
+        <input type="text" name="email" class="block w-full rounded-md border border-gray-200 focus:outline-none p-2 focus:ring-2 focus:ring-blue-200 focus:border-blue-500">
+        
+        <label for="address1">Address 1</label>
+        <input type="text" name="address1" class="block w-full rounded-md border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+        <label for="address2">Address2</label>
+        <input type="text" name="address2" class="block w-full rounded-md border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500">
+        
+        <label for="country">Country</label>
+        <input type="text" name="country" class="block w-full rounded-md border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500">
+        
+        <label for="city">City</label>
+        <input type="text" name="city" class="block w-full rounded-md border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500">
+        
+        <label for="state">State</label>
+        <input type="text" name="state" class="block w-full rounded-md border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500">
+        
+        
+        <button type="submit" class="btn bg-yellow-500 text-white hover:bg-yellow-600 hover:text-white p-2 rounded">Checkout</button>
     </form>
 </div>
 

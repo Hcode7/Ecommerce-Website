@@ -1,24 +1,25 @@
 {% extends 'pages/base.html' %}
 
-
 {% block content %}
-
-<div class="container">
-    <dov class="row  align-items-center">
-        <div class="col-sm-6">
-            <img src="{{ product.img.url }}" class="card-img-top" alt="{{ product.title }}">
+<br>
+<div class="container mx-auto p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <div>
+            <img src="{{ product.img.url }}" class="w-full h-auto rounded-lg shadow-lg" alt="">
         </div>
-        <div class="col-sm-6">
-            <h3>{{ product.title }}</h3>
-            <hr>
-            <p class="lead">{{ product.description }}</p>
-            <span><h4>${{ product.price }}</h4></span>
+        <div>
+            <h3 class="text-2xl font-bold text-gray-800">{{ product.title }}</h3>
+            <hr class="my-4 border-gray-300">
+            <p class="text-lg text-gray-600">{{ product.description }}</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-4">${{ product.price }}</h4>
             <br>
-            <div class="">
-                <a href="{% url 'add_cart' product.slug %}" class="btn btn-lg btn-primary">Add to cart</a>
+            <div class="mt-600">
+                <a href="{% url 'add_cart' product.slug %}" class="inline-block px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 hover:text-white text-lg font-medium rounded-lg shadow">
+                    Add to cart
+                </a>
             </div>
         </div>
-    </dov>
+    </div>
 </div>
 
 {% endblock content %}

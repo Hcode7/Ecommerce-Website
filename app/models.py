@@ -23,7 +23,7 @@ class Product(models.Model):
     description = models.TextField()
     img = models.ImageField(upload_to='media/')
     price = models.DecimalField(decimal_places=2, max_digits=6)
-    likes = models.ManyToManyField(User)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
  
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)

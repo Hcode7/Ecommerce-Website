@@ -11,9 +11,11 @@ from django.db.models import Sum
 
 
 def home(request):
+    product = (Product.objects.annotate(like=Sum('likes')).order_by('-like').first())
     products = Product.objects.all()[0:3]
     context = {
-        'products' : products
+        'products' : products,
+        'product' : product,
     }
     return render(request, 'pages/home.html', context)
 
@@ -51,13 +53,13 @@ def product_detail(request, slug):
     }
     return render(request, 'pages/product_detail.html', context)
 
-def like_product(request, slug):
-    food = get_object_or_404(Product, slug=slug)
-    if request.user and food.likes.all():
-        food.likes.remove(request.user)
-    else:
-        food.likes.add(request.user)
-    return redirect('home')
+# def like_product(request, slug):
+#     food = get_object_or_404(Product, slug=slug)
+#     if request.user and food.likes.all():
+#         food.likes.remove(request.user)
+#     else:
+#         food.likes.add(request.user)
+#     return redirect('home')
 
 
 def cart_view(request):
@@ -129,7 +131,7 @@ def checkout(request):
             return redirect('stripe_payment')
     else:
         form = ShippingAddressForm()
-        return render(request, 'pages/checkout.html', {'form' : form})
+    return render(request, 'pages/checkout.html', {'form' : form})
     
 
 

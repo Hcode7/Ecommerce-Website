@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%tb7u()&ahe)&5o7e772qm!lv-t@sug-o=y7_$-1j-atb1z381
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'account',
-    "crispy_forms",
-    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -136,9 +135,6 @@ MEDIA_ROOT = 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 STRIPE_PUB_KEY = "pk_test_51QaJfjRxebcXidgtGOvLCJPk7AvonURx24dzMPXrTaMcRqW1Fnhus0DU79xBLmCAJpTyr2Mo6TZYRqBa6hJqUJ9f00AK6qFcSH"
 STRIPE_SEC_KEY = "sk_test_51QaJfjRxebcXidgtaOqSmEzrO34XZi7R9lNMWEDV1KE1UrJgmCTKihhK1BqPcr4B7eaYEVAfG5WGFLiTu7liVeWG00W28hiAAP"

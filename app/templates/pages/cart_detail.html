@@ -2,130 +2,58 @@
 
 {% block content %}
 
-<style>
-  .cart-container {
-    padding: 15px;
-  }
-
-  .checkout-btn-container {
-    margin: 15px 0;
-    text-align: center;
-  }
-
-  .cart-table {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .product-img {
-    width: 90px;
-    height: auto;
-  }
-
-  .quantity-form {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .small-input {
-    width: 60px;
-    text-align: center;
-    font-size: 0.875rem;
-    padding: 0.25rem;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-  }
-
-  .update-btn {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #212529;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
-    border-radius: 4px;
-  }
-
-  .update-btn:hover {
-    background-color: #e0a800;
-    border-color: #d39e00;
-    color: #fff;
-  }
-
-  @media (max-width: 768px) {
-    .cart-table {
-      display: block;
-    }
-    
-    .cart-table thead {
-      display: none;
-    }
-    
-    .cart-table tbody tr {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 15px;
-      border-bottom: 1px solid #dee2e6;
-    }
-    
-    .cart-table td, 
-    .cart-table th {
-      display: block;
-      border: none;
-      text-align: center;
-    }
-
-    .cart-table td:first-child {
-      grid-column: 1;
-      grid-row: 1 / span 2;
-    }
-
-    .product-img {
-      width: 100%;
-      max-width: 120px;
-    }
-  }
-</style>
 
 
-<div class="cart-container">
+<div class="container mx-auto p-6">
   <div class="checkout-btn-container">
-    <a href="{% url 'checkout'  %}" class="btn btn-lg btn-warning">Checkout</a>
+    <a href="{% url 'checkout'  %}" class="my-4 text center px-6 py-3 bg-gray-400 text-white rounded hover:bg-yellow-500">Checkout</a>
   </div>
+  <br>
+  <div class="grid gap-6 md:grid-cols-3" style="width: 140rem;">
+    {% for cart_item in cart_item %}
+    <div class="p-6 bg-white shadow-md rounded-lg gap-2 " >
+      <div class="flex gap-2">
+        <img src="{{ cart_item.product.img.url }}" class="w-40" alt="">
+        <h2 class="text-xl font-bold text-gray-800">{{ cart_item.product.title }}</h2>
+        <p class="mt-2 text-bg-gray-600">x{{ cart_item.quantity }}</p>
+        <p class="mt-1 text-gray-600 font-bold">${{ cart_item.total_price }}</p>
+      </div>
+      <div class="flex items-center gap-2 justify-around">
+        <div class="mt-4 flex flex-col gap-2">
+          <form action="{% url 'update_cart' cart_item.id %}" class="flex items-center gap-2" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" class="w-16 px-2 py-1 text-sm border  rounded-md focus:ring focus:ring-blue-200">
+            <button type="submit" class="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500">Update</button>
+          </form>
+        </div>
+        <a href="{% url 'remove_cart' cart_item.id %}" class="px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">
+          Remove
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <div class="md:hidden grid gap-6 sm:grid-cols-1">
+    {% for cart_item in cart_item %}
+    <div class="p-4 bg-white shadow-md rounded-lg">
+      <img src="{{ cart_item.product.img.url }}" class="w-full h-auto around-md mb-4" alt="">
+      <h2 class="text-lg font-bold text-gray-800">{{ cart_item.product.title }}</h2>
+      <p class="mt-2 text-bg-gray-600">Quantity: {{ cart_item.quantity }}</p>
+      <p class="mt-1 text-gray-600">Price: ${{ cart_item.total_price }}</p>
+      <div class="flex items-center gap-2">
+        <div class="mt-4 flex flex-col gap-2">
+          <form action="{% url 'update_cart' cart_item.id %}" class="flex items-center gap-2" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" class="w-16 px-2 py-1 text-sm border  rounded-md focus:ring focus:ring-blue-200">
+            <button type="submit" class="px-4 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Update</button>
+          </form>
+          <a href="{% url 'remove_cart' cart_item.id %}" class="px-4 py-1 bg-red-500 text-white text-center rounded hover:bg-red-600">Delete</a>
+        </div>
+      </div>
+    </div>
 
-  <div class="cart-table">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Image</th>
-          <th scope="col">Title</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for cart_item in cart_item %}
-        <tr>
-          <td>
-            <img class="product-img" src="{{ cart_item.product.img.url }}" alt="{{ cart_item.product.title }}">
-          </td>
-          <th scope="row">{{ cart_item.product.title }}</th>
-          <td>
-            <form class="quantity-form" action="{% url 'update_cart' cart_item.id %}" method="post">
-              {% csrf_token %}
-              <input class="small-input" type="number" name="quantity" value="{{ cart_item.quantity }}" min="1">
-              <button type="submit" class="btn update-btn">Update</button>
-            </form>
-          </td>
-          <td>${{ cart_item.total_price }}</td>
-          <td><a href="{% url 'remove_cart' cart_item.id %}" class="btn btn-danger">Delete</a></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    {% endfor %}
   </div>
 </div>
 
