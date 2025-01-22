@@ -12,8 +12,10 @@ class Category(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if not self.slug:
+            self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
 
 
 class Product(models.Model):
@@ -24,9 +26,10 @@ class Product(models.Model):
     img = models.ImageField(upload_to='media/')
     price = models.DecimalField(decimal_places=2, max_digits=6)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
- 
+    created_at = models.DateTimeField(auto_now_add=True)
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
     
     def __str__(self):
@@ -55,7 +58,7 @@ class Order(models.Model):
         ('PAID', 'Paid'),
         ('FAILED' , 'Failed')
     ]
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     session_key = models.CharField(max_length=550, blank=True, null=True)
     status = models.CharField(max_length=150, choices=STATUS_CHOICES, default='Pending')
     is_complete = models.BooleanField(default=False)

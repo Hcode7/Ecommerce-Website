@@ -4,17 +4,15 @@
 
 
 
-<div class="container mx-auto p-6">
-  <div class="checkout-btn-container">
-    <a href="{% url 'checkout'  %}" class="my-4 text center px-6 py-3 bg-gray-400 text-white rounded hover:bg-yellow-500">Checkout</a>
-  </div>
+<div class="container mx-auto p-6 flex flex-wrap gap-4 ">
+
   <br>
-  <div class="grid gap-6 md:grid-cols-3" style="width: 140rem;">
+  <div class="grid gap-6 ">
     {% for cart_item in cart_item %}
-    <div class="p-6 bg-white shadow-md rounded-lg gap-2 " >
+    <div class="p-6 bg-white shadow-md shadow-lg rounded-lg gap-2 w-800" >
       <div class="flex gap-2">
         <img src="{{ cart_item.product.img.url }}" class="w-40" alt="">
-        <h2 class="text-xl font-bold text-gray-800">{{ cart_item.product.title }}</h2>
+        <h2 class="text-lg font-bold text-gray-800">{{ cart_item.product.title }}</h2>
         <p class="mt-2 text-bg-gray-600">x{{ cart_item.quantity }}</p>
         <p class="mt-1 text-gray-600 font-bold">${{ cart_item.total_price }}</p>
       </div>
@@ -33,28 +31,25 @@
     </div>
     {% endfor %}
   </div>
-  
-  <div class="md:hidden grid gap-6 sm:grid-cols-1">
-    {% for cart_item in cart_item %}
-    <div class="p-4 bg-white shadow-md rounded-lg">
-      <img src="{{ cart_item.product.img.url }}" class="w-full h-auto around-md mb-4" alt="">
-      <h2 class="text-lg font-bold text-gray-800">{{ cart_item.product.title }}</h2>
-      <p class="mt-2 text-bg-gray-600">Quantity: {{ cart_item.quantity }}</p>
-      <p class="mt-1 text-gray-600">Price: ${{ cart_item.total_price }}</p>
-      <div class="flex items-center gap-2">
-        <div class="mt-4 flex flex-col gap-2">
-          <form action="{% url 'update_cart' cart_item.id %}" class="flex items-center gap-2" method="post">
-            {% csrf_token %}
-            <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" class="w-16 px-2 py-1 text-sm border  rounded-md focus:ring focus:ring-blue-200">
-            <button type="submit" class="px-4 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Update</button>
-          </form>
-          <a href="{% url 'remove_cart' cart_item.id %}" class="px-4 py-1 bg-red-500 text-white text-center rounded hover:bg-red-600">Delete</a>
-        </div>
+  {% if cart_item %}
+  <div class="max-sm-w shadow-md rounded-xl w-370 ">
+    <div class="px-6 py-4">
+      <h2 class="font-bold text-3xl font-mono">Order Summary</h2>
+      <br>
+      <hr>
+      <div class="flex gap-4 space-x-7 items-center">
+
+        <span class="fot-sans text-2xl items-center">Total</span>
+        <span class="font-bold text-3xl text-right">${{ total_price }}</span>
+      </div>
+      <br>
+      <br>
+      <div class="checkout-btn-container">
+        <a href="{% url 'checkout'  %}" class="my-4 text center px-6 py-3 bg-gray-900 text-white rounded hover:bg-gray-800 flex justify-center rounded-xl hover:text-white">Proceed to Checkout</a>
       </div>
     </div>
-
-    {% endfor %}
   </div>
+  {% endif %}
 </div>
 
 {% endblock content %}

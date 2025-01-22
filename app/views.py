@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from .forms import *
 import stripe
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 # Create your views here.
 
@@ -71,7 +71,11 @@ def cart_view(request):
         cart  = Cart.objects.filter(session_key=request.session.session_key).first()
     
     cart_item = cart.cartitem_set.all() if cart else []
-    return render(request, 'pages/cart_detail.html', {'cart' : cart, 'cart_item' : cart_item})
+
+    total_price = cart_item.aggregate(
+        total_price=Sum(F('product__price') * F('quantity'))
+    )['total_price']
+    return render(request, 'pages/cart_detail.html', {'cart' : cart, 'cart_item' : cart_item, 'total_price' : total_price})
 
 
 def add_to_cart(request, slug):
@@ -114,19 +118,26 @@ def remove_cart(request, cart_id):
     if request.user.is_authenticated:
         cartitem = get_object_or_404(CartItem, id=cart_id, cart__user=request.user)
     else:
-        cartitem = get_object_or_404(CartItem, id=cart_id, cart__user=request.session.session_key)
+        cartitem = get_object_or_404(CartItem, id=cart_id, cart__session_key=request.session.session_key)
 
     cartitem.delete()
     return redirect('cart')
 
 
 def checkout(request):
+    if not request.session.session_key:
+        request.session.create()
     if request.method == 'POST':
         form = ShippingAddressForm(request.POST)
         if form.is_valid():
             shipping_address = form.save(commit=False)   
-            order = Order.objects.create(customer=request.user)
-            shipping_address.order = order
+            if request.user.is_authenticated:
+                order = Order.objects.create(customer=request.user)
+                shipping_address.order = order
+            else:
+                order = Order.objects.create(session_key=request.session.session_key)
+                shipping_address.order = order
+            
             shipping_address.save()
             return redirect('stripe_payment')
     else:
@@ -140,7 +151,7 @@ def payment_view(request):
 
 
     if not request.session.session_key:
-        request.session.create
+        request.session.create()
     if request.user.is_authenticated:
         cart = Cart.objects.filter(user=request.user).first()
     else:
@@ -149,13 +160,10 @@ def payment_view(request):
     if not cart or not cart.cartitem_set.exists():
         return redirect('cart')
     
-    order = Order.objects.create(customer=request.user)
-    cartitem = cart.cartitem_set.all()
 
-    for item in cartitem:
-        OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
-    
     line_items = []
+    
+    cartitem = cart.cartitem_set.all()
 
     for item in cartitem:
         new_data = {
@@ -178,8 +186,18 @@ def payment_view(request):
             success_url=request.build_absolute_uri(reverse('order-history')),
             cancel_url=request.build_absolute_uri(reverse('payment_cancel')),
         )
+        
+        if request.user.is_authenticated:
+            order = Order.objects.create(customer=request.user)
+        else:
+            order = Order.objects.create(session_key=request.session.session_key)
+
+        for item in cartitem:
+            OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
+
     except session.error.StripeError as e:
         return render(request, 'pages.payment_error.html', {'error' : e})
+
 
     cart.cartitem_set.all().delete()
     cart.delete()
