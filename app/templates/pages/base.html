@@ -20,16 +20,29 @@
     <main class="bg-white w-full h-screen">
         <br>
         <nav class="flex justify-around">
-                <ul class="flex justify-between gap-5 items-center">
+                <ul class="flex justify-between gap-6 items-center">
                     <h2 class="font-bold text-xl"><a href="{% url 'home' %}">Home</a></h2>
-                    <li class=""><a href="{% url 'product_list' %}">Products</a></li>
+                    <li class="hidden sm:block">
+                        <a href="{% url 'product_list' %}">Products</a>
+                    </li>                                    
                 </ul>
-                <div class="form">
-                    <form action="{% url 'product_list' %}" method="get">
-                        <input placeholder="Search.." type="text" name="search" class="border rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
-                        <button type="submit">Search</button>
+                <div class="form w-full sm:w-35">
+                    <form action="{% url 'product_list' %}" method="get" class="flex">
+                        <input 
+                            placeholder="Search.." 
+                            type="text" 
+                            name="search" 
+                            class="border w-full sm:w-20 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                        >
+                        <button 
+                            type="submit" 
+                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        >
+                            Search
+                        </button>
                     </form>
                 </div>
+                
                 <ul class="flex justify-between gap-3 items-center">
                     <a href="{% url 'cart' %}">
                         <span class="material-symbols-outlined">
