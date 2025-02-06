@@ -22,6 +22,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150, blank=True, null=True, unique=True)
+    stock = models.PositiveIntegerField(blank=True, null=True)
     description = models.TextField()
     img = models.ImageField(upload_to='media/')
     price = models.DecimalField(decimal_places=2, max_digits=6)
@@ -32,9 +33,17 @@ class Product(models.Model):
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
     
+    
     def __str__(self):
         return self.title
     
+
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    comment = models.TextField()
+    
+    def __str__(self):
+        return self.comment
 
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -70,11 +79,12 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orderitems')
     quantity = models.IntegerField()
 
     def total_price(self):
         return self.product.price * self.quantity
+    
     
 class ShippingAddress(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='shipping_address')

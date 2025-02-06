@@ -5,13 +5,24 @@ from django.http import JsonResponse
 from .forms import *
 import stripe
 from django.conf import settings
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Count
+from django.db.models.functions import Coalesce
 
 # Create your views here.
 
 
 def home(request):
-    product = (Product.objects.annotate(like=Sum('likes')).order_by('-like').first())
+    product = (Product.objects.annotate(
+        like=Sum('likes'),
+        comment_count=Count('comments'), 
+        order_count=Count('orderitems'),
+        ).order_by(
+            '-like', 
+            'comment_count', 
+            'order_count',
+        ).first()
+    )
+
     products = Product.objects.all()[0:3]
     context = {
         'products' : products,
@@ -28,7 +39,16 @@ def product_list(request):
     if search:
         products = Product.objects.filter(title__icontains=search)
     else:
-        products = Product.objects.annotate(total_price=Sum('orderitem__quantity')).order_by('-total_price')
+        products = Product.objects.annotate(
+            orderitem_count=Count('orderitems'), 
+            likes_count=Count('likes'), 
+            comments_count=Count('comments')
+            ).order_by(
+                'orderitem_count', 
+                'likes_count', 
+                '-created_at', 
+                'comments_count'
+            )
 
     form = ProductFilter(request.GET or None)
     if form.is_valid():
@@ -48,18 +68,31 @@ def product_list(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    comments = Comment.objects.filter(product=product)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.save()
+    else:
+        form = CommentForm()
+    
     context = {
         'product' : product,
+        'form' : form,
+        'comments' : comments,
     }
     return render(request, 'pages/product_detail.html', context)
 
-# def like_product(request, slug):
-#     food = get_object_or_404(Product, slug=slug)
-#     if request.user and food.likes.all():
-#         food.likes.remove(request.user)
-#     else:
-#         food.likes.add(request.user)
-#     return redirect('home')
+def like_product(request, slug):
+    food = get_object_or_404(Product, slug=slug)
+    if request.user and food.likes.all():
+        food.likes.remove(request.user)
+    else:
+        food.likes.add(request.user)
+    return redirect('home')
+
 
 
 def cart_view(request):

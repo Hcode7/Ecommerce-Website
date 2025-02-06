@@ -14,4 +14,6 @@ urlpatterns = [
     path('payment/create-checkout-session/', views.payment_view, name='stripe_payment'),
     path('payment_fail/', views.payment_cancel_view, name='payment_cancel'),
     path('order-history/', views.order, name='order-history'),
+
+    path('like-product/<slug:slug>/', views.like_product, name='like'),
 ]

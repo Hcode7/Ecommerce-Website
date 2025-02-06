@@ -13,6 +13,11 @@ class ProductForm(forms.ModelForm):
         fields = '__all__'
 
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment']
+
 class ShippingAddressForm(forms.ModelForm):
     class Meta:
         model = ShippingAddress
