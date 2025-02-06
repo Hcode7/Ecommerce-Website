@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
 load_dotenv()
 
 
@@ -145,6 +148,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_PUB_KEY = os.getenv('STRIPE_PUB_KEY')
 STRIPE_SEC_KEY = os.getenv('STRIPE_SEC_KEY')
+
+
+
+EDGE_CONFIG_URL = env.str('EDGE_CONFIG')
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
