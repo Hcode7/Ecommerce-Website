@@ -69,11 +69,18 @@ def product_list(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     comments = Comment.objects.filter(product=product)
+    if not request.session.session_key:
+        request.session.create()
+    
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.product = product
+            if request.user.is_authenticated:
+                comment.user = request.user
+            else:
+                comment.session_key = request.session.session_key
             comment.save()
     else:
         form = CommentForm()

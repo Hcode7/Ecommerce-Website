@@ -25,10 +25,30 @@
         <div class="space-y-4 max-w-md mx-auto p-4 bg-white shadow rounded">
             <span class="text-xl font-bold">Comments:</span> 
             {% for comment in comments %}
-                <h4 class="max-w-md mx-auto bg-white shadow rounded p-2">{{ comment.comment }}</h4>
+                <div class="max-w-md mx-auto bg-white shadow rounded p-2">
+
+                    {% if request.user.is_authenticated %}
+                    <span class="text-sm">{{ comment.user.username }}</span>
+                    {% else %}
+                    <span class="text-sm">{{ comment.username }}</span>
+                    {% endif %}
+                    <h4 class="">{{ comment.comment }}</h4>
+                </div>
+                
             {% endfor %}
             <form method="post" class="">
                 {% csrf_token %}
+                {% if not request.user.is_authenticated %}
+                    <label for="username" class="block text-sm font-medium text-gray-700">username</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        placeholder="Enter your username"
+                        class="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                {% endif %}
+                <br>
                 <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
                 <input 
                     type="text" 
@@ -38,6 +58,7 @@
                     class="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <br>
+
                 <button 
                     type="submit" 
                     class="w-full py-2 px-4 bg-blue-500 text-white font-bold rounded hover:bg-blue-600"

@@ -39,6 +39,9 @@ class Product(models.Model):
     
 
 class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    username = models.CharField(max_length=150, blank=True, null=True)
+    session_key = models.CharField(max_length=500, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField()
     
