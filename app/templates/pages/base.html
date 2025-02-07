@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>E-commerce</title>
 </head>
 <style>
@@ -19,52 +20,95 @@
 
     <main class="bg-white w-full h-screen">
         <br>
-        <nav class="flex justify-around">
-                <ul class="flex justify-between gap-6 items-center">
-                    <h2 class="font-bold text-xl"><a href="{% url 'home' %}">Home</a></h2>
-                    <li class="hidden sm:block">
+        <nav class="flex justify-between items-center gap-4 px-6">
+            <!-- Left Side - Logo & Links -->
+            <div class="flex items-center gap-6">
+                <h2 class="font-bold text-xl">
+                    <a href="{% url 'home' %}">Home</a>
+                </h2>
+                <ul class="hidden sm:flex gap-6">
+                    <li>
                         <a href="{% url 'product_list' %}">Products</a>
-                    </li>                                    
+                    </li>
                 </ul>
-                <div class="form w-full sm:w-40">
-                    <form action="{% url 'product_list' %}" method="get" class="flex">
-                        <input 
-                            placeholder="Search.." 
-                            type="text" 
-                            name="search" 
-                            class="border w-full sm:w-28 rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
-                        >
-                        <button 
-                            type="submit" 
-                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                        >
-                            Search
-                        </button>
-                    </form>
-                </div>
-                
-                <ul class="flex justify-between gap-3 items-center">
-                    <a href="{% url 'cart' %}">
-                        <span class="material-symbols-outlined">
-                            shopping_cart
-                        </span>
-                    </a>
+            </div>
 
-                </ul>
+            <!-- Search Bar -->
+            <div class="w-full sm:w-60 md:w-80 lg:w-96">
+                <form action="{% url 'product_list' %}" method="get" class="flex">
+                    <input 
+                        placeholder="Search.." 
+                        type="text" 
+                        name="search" 
+                        class="border w-full rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
+                    >
+                    <button 
+                        type="submit" 
+                        class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                        Search
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Cart & Auth Links -->
+            <div class="flex items-center gap-3">
+                <a class="hidden sm:flex" href="{% url 'cart' %}">
+                    <span class="material-symbols-outlined">
+                        shopping_cart
+                    </span>
+                </a>
+                <br>
                 {% if request.user.is_authenticated %}
-                    <ul class="flex items-center gap-3">
+                    <ul class="hidden sm:flex items-center gap-3">
                         <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                 {% else %}
-                    <ul class="flex items-center gap-3">
+                    <ul class="hidden sm:flex items-center gap-3">
                         <li><a href="{% url 'login' %}">Login</a></li>
-                        <li class="bg-gray-200 p-2 rounded-lg"><a href="{% url 'register' %}">Register</a></li>
+                        <li class="bg-gray-200 p-2 rounded-lg">
+                            <a href="{% url 'register' %}">Register</a>
+                        </li>
                     </ul>
                 {% endif %}
-                
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="sm:hidden text-2xl">
+                ☰
+            </button>
         </nav>
+
+        <!-- Mobile Dropdown Menu (Hidden by Default) -->
+        <div id="mobile-menu" class="hidden sm:hidden space-y-4 flex items-center bg-gray-100 p-4 mt-2">
+            <ul class="space-y-3 m-4">
+                <a class="flex" style="margin: 3px;" href="{% url 'cart' %}">
+                    <span class="material-symbols-outlined">
+                        shopping_cart
+                    </span>
+                </a>
+                <li><a href="{% url 'product_list' %}" class="block">Products</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="block">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="block">Login</a></li>
+                    <li class="bg-gray-200 p-2 rounded-lg">
+                        <a href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
         {% block content %}
         {% endblock content %}
     </main>
+
+    <!-- JavaScript for Menu Toggle -->
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+
 </body>
 </html>
