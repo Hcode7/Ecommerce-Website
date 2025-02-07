@@ -110,11 +110,11 @@ def cart_view(request):
     else:
         cart  = Cart.objects.filter(session_key=request.session.session_key).first()
     
-    cart_item = cart.cartitem_set.all() if cart else []
+    cart_item = cart.cartitem_set.all() if cart else CartItem.objects.none()
 
     total_price = cart_item.aggregate(
         total_price=Sum(F('product__price') * F('quantity'))
-    )['total_price']
+    )['total_price'] or 0
     return render(request, 'pages/cart_detail.html', {'cart' : cart, 'cart_item' : cart_item, 'total_price' : total_price})
 
 
