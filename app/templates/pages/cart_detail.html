@@ -1,57 +1,67 @@
 {% extends 'pages/base.html' %}
 
 {% block content %}
+<div class="container mx-auto p-6 flex flex-wrap gap-4">
 
-
-
-<div class="container mx-auto p-6 flex flex-wrap gap-4 ">
-
-  <br>
-  <div class="grid gap-6 ">
-    {% for cart_item in cart_item %}
-    <div class="p-6 bg-white shadow-md shadow-lg rounded-lg gap-2 w-800" >
+  <div class="grid gap-6 w-800">
+    {% for item in cart_item %}
+    <div class="p-6 bg-white shadow-md sm:w-full shadow-lg rounded-lg gap-2 w-850 hidden sm:block">
       <div class="flex gap-2">
-        <img src="{{ cart_item.product.img.url }}" class="w-40" alt="">
-        <h2 class="text-lg font-bold text-gray-800">{{ cart_item.product.title }}</h2>
-        <p class="mt-2 text-bg-gray-600">x{{ cart_item.quantity }}</p>
-        <p class="mt-1 text-gray-600 font-bold">${{ cart_item.total_price }}</p>
+        <img src="{{ item.product.img.url }}" class="w-40" alt="">
+        <h2 class="text-lg font-bold text-gray-800">{{ item.product.title }}</h2>
+        <p class="mt-2 text-gray-600">x{{ item.quantity }}</p>
+        <p class="mt-1 text-gray-600 font-bold">${{ item.total_price }}</p>
       </div>
       <div class="flex items-center gap-2 justify-around">
         <div class="mt-4 flex flex-col gap-2">
-          <form action="{% url 'update_cart' cart_item.id %}" class="flex items-center gap-2" method="post">
+          <form action="{% url 'update_cart' item.id %}" class="flex items-center gap-2" method="post">
             {% csrf_token %}
-            <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" class="w-16 px-2 py-1 text-sm border  rounded-md focus:ring focus:ring-blue-200">
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="w-16 px-2 py-1 text-sm border rounded-md focus:ring focus:ring-blue-200">
             <button type="submit" class="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500">Update</button>
           </form>
         </div>
-        <a href="{% url 'remove_cart' cart_item.id %}" class="px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">
-          Remove
-        </a>
+        <a href="{% url 'remove_cart' item.id %}" class="px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">Remove</a>
+      </div>
+    </div>
+
+    <!-- Small screen version -->
+    <div class="p-6 bg-white shadow-md sm:w-full shadow-lg rounded-lg gap-2 w-800 block sm:hidden">
+      <div class="flex gap-2">
+        <img src="{{ item.product.img.url }}" class="w-40" alt="">
+        <h2 class="text-lg font-bold text-gray-800">{{ item.product.title }}</h2>
+        <p class="mt-2 text-gray-600">x{{ item.quantity }}</p>
+      </div>
+      <p class="mt-1 text-gray-600 font-bold">${{ item.total_price }}</p>
+      <div class="flex items-center gap-2 justify-around">
+        <div class="mt-4 flex flex-col gap-2">
+          <form action="{% url 'update_cart' item.id %}" class="flex items-center gap-2" method="post">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="w-16 px-2 py-1 text-sm border rounded-md focus:ring focus:ring-blue-200">
+            <button type="submit" class="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500">Update</button>
+          </form>
+        </div>
+        <a href="{% url 'remove_cart' item.id %}" class="px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">Remove</a>
       </div>
     </div>
     {% endfor %}
   </div>
+
   {% if cart_item %}
-  <div class="max-sm-w shadow-md rounded-xl w-370 ">
+  <div class="shadow-md rounded-xl w-400">
     <div class="px-6 py-4">
       <h2 class="font-bold text-3xl font-mono">Order Summary</h2>
       <br>
       <hr>
       <div class="flex gap-4 space-x-7 items-center">
-
-        <span class="fot-sans text-2xl items-center">Total</span>
+        <span class="font-sans text-2xl items-center">Total</span>
         <span class="font-bold text-3xl text-right">${{ total_price }}</span>
       </div>
-      <br>
-      <br>
+      <br><br>
       <div class="checkout-btn-container">
-        <a href="{% url 'checkout'  %}" class="my-4 text center px-6 py-3 bg-gray-900 text-white rounded hover:bg-gray-800 flex justify-center rounded-xl hover:text-white">Proceed to Checkout</a>
+        <a href="{% url 'checkout' %}" class="my-4 text-center px-6 py-3 bg-gray-900 text-white rounded hover:bg-gray-800 flex justify-center rounded-xl hover:text-white">Proceed to Checkout</a>
       </div>
     </div>
-  </div>
+</div>
   {% endif %}
 </div>
-
 {% endblock content %}
-
-

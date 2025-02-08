@@ -17,9 +17,10 @@ def home(request):
         comment_count=Count('comments'), 
         order_count=Count('orderitems'),
         ).order_by(
-            '-like', 
+            'like', 
             'comment_count', 
             'order_count',
+            '-created_at'
         ).first()
     )
 

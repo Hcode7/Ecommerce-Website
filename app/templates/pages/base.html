@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,6 +55,9 @@
             <!-- Cart & Auth Links -->
             <div class="flex items-center gap-3">
                 <a class="hidden sm:flex" href="{% url 'cart' %}">
+                    <h4 id="cart-counter" class="btn bg-red-600 text-white rounded-full p-1">
+                        {{ count_cart }}
+                    </h4>
                     <span class="material-symbols-outlined">
                         shopping_cart
                     </span>
@@ -82,7 +86,10 @@
         <!-- Mobile Dropdown Menu (Hidden by Default) -->
         <div id="mobile-menu" class="hidden sm:hidden space-y-4 flex items-center bg-gray-100 p-4 mt-2">
             <ul class="space-y-3 m-4">
-                <a class="flex" style="margin: 3px;" href="{% url 'cart' %}">
+                <a class="flex items-center" href="{% url 'cart' %}">
+                    <h4 id="cart-counter" class="btn bg-red-600 text-white rounded-full p-1">
+                        {{ count_cart }}
+                    </h4>
                     <span class="material-symbols-outlined">
                         shopping_cart
                     </span>
@@ -109,6 +116,6 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
     </script>
-
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

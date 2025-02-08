@@ -28,6 +28,7 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=6)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     created_at = models.DateTimeField(auto_now_add=True)
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
