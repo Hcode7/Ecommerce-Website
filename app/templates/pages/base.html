@@ -56,7 +56,6 @@
             <div class="flex items-center gap-3">
                 <a class="hidden sm:flex" href="{% url 'cart' %}">
                     <h4 id="cart-counter" class="btn bg-red-600 text-white rounded-full p-1">
-                        {{ count_cart }}
                     </h4>
                     <span class="material-symbols-outlined">
                         shopping_cart
@@ -110,12 +109,7 @@
         {% endblock content %}
     </main>
 
-    <!-- JavaScript for Menu Toggle -->
-    <script>
-        document.getElementById('menu-btn').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-    </script>
+
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

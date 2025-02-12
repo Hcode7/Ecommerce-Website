@@ -33,9 +33,6 @@ def home(request):
 
 
 def product_list(request):
-    # products = Product.objects.all()
-    # products = Product.objects.annotate(total_price=Sum('orderitem__quantity')).order_by('-total_price')
-    
     search = request.GET.get('search', '')
     if search:
         products = Product.objects.filter(title__icontains=search)
@@ -99,7 +96,7 @@ def like_product(request, slug):
         food.likes.remove(request.user)
     else:
         food.likes.add(request.user)
-    return redirect('home')
+    return JsonResponse({"message" : "Like"})
 
 
 
@@ -135,7 +132,7 @@ def add_to_cart(request, slug):
 
     cartitem.save()
 
-    return redirect('cart')
+    return JsonResponse({'message': 'Item added to cart!'})
 
 
 def update_cart(request, cart_id):

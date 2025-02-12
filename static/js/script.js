@@ -1,10 +1,7 @@
 
+// JavaScript for Menu Toggle    
+document.getElementById('menu-btn').addEventListener('click', function() {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+});
 
-// let counter = 0;
-// document.querySelector('h4').innerHTML = counter;
 
-// function cart() {
-//     counter++;
-//     document.querySelector('h4').innerHTML = counter;
-//     console.log(counter)
-// }

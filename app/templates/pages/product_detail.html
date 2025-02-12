@@ -14,9 +14,10 @@
             <h4 class="text-xl font-semibold text-gray-800 mt-4">${{ product.price }}</h4>
             <br>
             <div class="mt-600">
-                <a  href="{% url 'add_cart' product.slug %}" class="inline-block px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 hover:text-white text-lg font-medium rounded-lg shadow">
+                <!-- <a  href="{% url 'add_cart' product.slug %}" class="inline-block px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 hover:text-white text-lg font-medium rounded-lg shadow">
                     Add to cart
-                </a>
+                </a> -->
+                <button  class="inline-block px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 hover:text-white text-lg font-medium rounded-lg shadow" data-product-slug="{{ product.slug }}" id="cart">Add to cart</button>
             </div>
         </div>
     </div>
@@ -71,4 +72,23 @@
     </div>
 </div>
 
+<script>
+    document.querySelector("#cart").addEventListener("click", function () {
+        let productSlug = this.getAttribute("data-product-slug");
+     
+        fetch(`/add-to-cart/${productSlug}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Added to cart:", data);
+        })
+        .catch(error => console.error("Error:", error));
+    });
+    </script>
+    
 {% endblock content %}
