@@ -159,7 +159,7 @@ def remove_cart(request, cart_id):
         cartitem = get_object_or_404(CartItem, id=cart_id, cart__session_key=request.session.session_key)
 
     cartitem.delete()
-    return redirect('cart')
+    return JsonResponse({"success": True})
 
 
 def checkout(request):

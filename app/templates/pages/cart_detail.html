@@ -5,7 +5,7 @@
 
   <div class="grid gap-6 w-800">
     {% for item in cart_item %}
-    <div class="p-6 bg-white shadow-md sm:w-full shadow-lg rounded-lg gap-2 w-850 hidden sm:block">
+    <div id="cart-item-{{ item.id }}" data-item-id="{{ item.id }}" class="card p-6 bg-white shadow-md sm:w-full shadow-lg rounded-lg gap-2 w-850 hidden sm:block">
       <div class="flex gap-2">
         <img src="{{ item.product.img.url }}" class="w-40" alt="">
         <h2 class="text-lg font-bold text-gray-800">{{ item.product.title }}</h2>
@@ -20,7 +20,7 @@
             <button type="submit" class="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500">Update</button>
           </form>
         </div>
-        <a href="{% url 'remove_cart' item.id %}" class="px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">Remove</a>
+        <button id="delete" data-product-id="{{ item.id }}" class="delete-btn px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">Remove</button>
       </div>
     </div>
 
@@ -40,14 +40,14 @@
             <button type="submit" class="px-4 py-1 bg-gray-400 text-white rounded hover:bg-gray-500">Update</button>
           </form>
         </div>
-        <a href="{% url 'remove_cart' item.id %}" class="px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">Remove</a>
+        <button onclick="removecount()" id="delete" data-product-id="{{ item.id }}" class="delete-btn px-4 py-1 text-gray-600 text-center rounded hover:bg-gray-200">Remove</button>
       </div>
     </div>
     {% endfor %}
   </div>
 
   {% if cart_item %}
-  <div class="shadow-md rounded-xl w-400">
+  <div id="total" class="shadow-md rounded-xl w-400">
     <div class="px-6 py-4">
       <h2 class="font-bold text-3xl font-mono">Order Summary</h2>
       <br>
@@ -64,4 +64,36 @@
 </div>
   {% endif %}
 </div>
+
+<script>
+  document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('delete-btn')) {
+
+        let DeleteId = event.target.getAttribute('data-product-id');
+        let itemElement = document.getElementById(`cart-item-${DeleteId}`);
+        let ordersummary = document.getElementById('total')
+
+        fetch(`/delete-cart/${DeleteId}/`, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrftoken,
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Data', data);
+          if (data.success) {
+            itemElement?.remove();
+            if (itemElement === null) {
+              ordersummary?.remove();
+            }
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+      });
+      
+</script>
+
 {% endblock content %}
