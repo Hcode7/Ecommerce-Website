@@ -6,12 +6,17 @@
     {% if product %}
 <!-- Hidden on small screens, visible on sm and larger -->
 <div class="container hidden sm:block mx-auto flex justify-around">
-    <div class="flex flex-col md:flex-row items-center gap-10 space-x-8 mt-4">
+    <div class="flex flex-col md:flex-row items-center gap-9 space-x-9 mt-5">
         <div class="ml-4">
+            <span class="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Featured Product</span>
+            <br>
             <h2 class="text-2xl font-bold">{{ product.title }}</h2>
-            <p class="mt-2 text-sm">{{ product.description }}</p>
-            <span class="mt-4 block text-lg font-semibold">${{ product.price }}</span>
-            <a 
+            <p class="mt-2 text-sm">{{ product.description|linebreaks }}</p>
+            <span class="mt-4 block text-lg font-semibold
+            bg-clip-text text-transparent 
+            bg-gradient-to-r from-red-500 bg-gray-200 bg-via-yellow-500 to-blue-500">
+                ${{ product.price }}
+            </span>            <a 
                 href="{% url 'product_detail' product.slug %}" 
                 class="mt-2 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 View Product
@@ -21,8 +26,8 @@
             <img 
                 src="{{ product.img.url }}" 
                 alt="{{ product.title }}" 
-                style="width: 350px;"
-                class="w-60 h-70 object-cover rounded-lg shadow-md rotate-45">
+                style="width: 650px;"
+                class="w-60 h-70 object-cover rounded-lg shadow-md ">
         </a>
     </div>
 </div>
@@ -30,17 +35,25 @@
 <!-- Visible on small screens, hidden on sm and larger -->
 <div class="container sm:hidden mx-auto flex justify-around">
     <div class="flex flex-col md:flex-row items-center gap-10 space-x-8 mt-4">
-        <a href="{% url 'product_detail' product.slug %}">
-            <img 
+        
+        <div>
+            <a href="{% url 'product_detail' product.slug %}">
+                <img 
                 src="{{ product.img.url }}" 
                 alt="{{ product.title }}" 
                 style="width: 350px;"
                 class="w-60 h-70 object-cover rounded-lg shadow-md">
-        </a>
+            </a>
+            
+        </div>
         <div class="ml-4">
             <h2 class="text-2xl font-bold">{{ product.title }}</h2>
-            <p class="mt-2 text-sm">{{ product.description }}</p>
-            <span class="mt-4 block text-lg font-semibold">${{ product.price }}</span>
+            <p class="mt-2 text-sm">{{ product.description|linebreaks }}</p>
+            <span class="mt-4 block text-lg font-semibold
+            bg-clip-text text-transparent 
+            bg-gradient-to-r from-red-500 bg-gray-200 p-2 bg-via-yellow-500 to-blue-500">
+                ${{ product.price }}
+            </span>
             <a 
                 href="{% url 'product_detail' product.slug %}" 
                 class="mt-2 inline-block hover:text-white px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
@@ -58,6 +71,8 @@
 <br>
 <hr class="shadow">
 <br>
+<h3 class="text-3xl font-bold text-center">Our Product</h3>
+<br>
 <div class="container mx-auto p-6">
     <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -66,19 +81,24 @@
             <div class="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                 <!-- <a href="{% url 'like' product.slug %}" id="like" data-product-slug="{{ product.slug }}" class="bg-orange-500 rounded text-end p-2 m-80 ">Like</a> -->
                 <a href="{% url 'product_detail' product.slug %}">
-                    <div>
-                        <img src="{{ product.img.url }}" class="w-full h-48 object-cover" alt="">
+                    <div class="relative">
+                        <img src="{{ product.img.url }}" class="w-full h-48 object-cover" alt="Product Image">
+                        <span class="absolute top-4 text-right right-4 bg-white px-2 py-1 text-sm text-gray-800 shadow rounded font-bold 
+                        bg-clip-text text-transparent 
+                        bg-gradient-to-r from-red-500 bg-gray-200 bg-via-yellow-500 to-blue-500">
+                            ${{ product.price }}
+                        </span>
                     </div>
+                    
                     <div class="p-4">
                         <div class="text-lg font-bold text-gray-800" >{{ product.title  }}</div>
                         <p class="mt-2 text-gray-600">
-                            {{ product.description }}
+                            {{ product.description|linebreaks }}
                         </p>
                         <div class="mt-4  flex justify-between items-center">
                             <button class="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
                                 Learn More
                             </button>
-                            <span class="text-sm text-gray-500">${{ product.price }}</span>
                         </div>
                     </div>
                 </a>
