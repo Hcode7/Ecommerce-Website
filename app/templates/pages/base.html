@@ -21,15 +21,15 @@
 
     <main class="bg-white w-full h-screen">
         <br>
-        <nav class="flex justify-between items-center gap-4 px-6">
+        <nav class="flex justify-between items-center gap-3 px-6">
             <!-- Left Side - Logo & Links -->
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-10">
                 <h2 class="font-bold text-xl">
-                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'home' %}">Ecom</a>
                 </h2>
                 <ul class="hidden sm:flex gap-6">
-                    <li>
-                        <a href="{% url 'product_list' %}">Products</a>
+                    <li class="">
+                        <a class="outline-2 outline-offset-2 outline-solid bg-gray-100 p-2 rounded-lg border-gray-300" href="{% url 'product_list' %}">Products</a>
                     </li>
                 </ul>
             </div>
@@ -53,7 +53,7 @@
             </div>
             
             <!-- Cart & Auth Links -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
                 <a class="hidden sm:flex" href="{% url 'cart' %}">
                     <h4 id="cart-counter" class="btn bg-red-600 text-white rounded-full p-1">
                         {{ count_cart }}
@@ -69,14 +69,21 @@
                     </ul>
                 {% else %}
                     <ul class="hidden sm:flex items-center gap-3">
-                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li class="bg-black p-2 rounded-lg"><a class="text-white hover:text-white" href="{% url 'login' %}">Login</a></li>
                         <li class="bg-gray-200 p-2 rounded-lg">
                             <a href="{% url 'register' %}">Register</a>
                         </li>
                     </ul>
                 {% endif %}
             </div>
-
+            <a class="flex flex sm:hidden  items-center" href="{% url 'cart' %}">
+                <h4 id="cart-counter" class="btn bg-red-600 text-white rounded-full p-1">
+                    {{ count_cart }}
+                </h4>
+                <span class="material-symbols-outlined">
+                    shopping_cart
+                </span>
+            </a>
             <!-- Mobile Menu Button -->
             <button id="menu-btn" class="sm:hidden text-2xl">
                 ☰
@@ -84,22 +91,15 @@
         </nav>
 
         <!-- Mobile Dropdown Menu (Hidden by Default) -->
-        <div id="mobile-menu" class="hidden sm:hidden space-y-4 flex items-center bg-gray-100 p-4 mt-2">
+        <div id="mobile-menu" class="hidden flex justify-center sm:hidden space-y-4 flex items-center bg-gray-100 p-4 mt-2">
             <ul class="space-y-3 m-4">
-                <a class="flex items-center" href="{% url 'cart' %}">
-                    <h4 id="cart-counter" class="btn bg-red-600 text-white rounded-full p-1">
-                        {{ count_cart }}
-                    </h4>
-                    <span class="material-symbols-outlined">
-                        shopping_cart
-                    </span>
-                </a>
-                <li><a href="{% url 'product_list' %}" class="block">Products</a></li>
+
+                <li><a href="{% url 'product_list' %}" class="block bg-gray-100 p-2 rounded-lg">Products</a></li>
                 {% if request.user.is_authenticated %}
                     <li><a href="{% url 'logout' %}" class="block">Logout</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}" class="block">Login</a></li>
-                    <li class="bg-gray-200 p-2 rounded-lg">
+                <li class="bg-black p-2 rounded-lg"><a class="text-white hover:text-white" href="{% url 'login' %}">Login</a></li>
+                <li class="bg-gray-200 p-2 rounded-lg">
                         <a href="{% url 'register' %}">Register</a>
                     </li>
                 {% endif %}

@@ -43,7 +43,7 @@
     
             {% for product in products %}
     
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden" loading="lazy">
                 <a href="{% url 'product_detail' product.slug %}">
                         <img src="{{ product.img.url }}" class="w-full h-48 object-cover" alt="">
                         <div class="p-4">

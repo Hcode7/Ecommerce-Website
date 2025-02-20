@@ -16,7 +16,7 @@ class ProductForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['comment']
+        fields = ['comment', 'username']
 
 class ShippingAddressForm(forms.ModelForm):
     class Meta:

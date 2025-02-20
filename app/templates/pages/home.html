@@ -43,7 +43,7 @@
             <span class="mt-4 block text-lg font-semibold">${{ product.price }}</span>
             <a 
                 href="{% url 'product_detail' product.slug %}" 
-                class="mt-2 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                class="mt-2 inline-block hover:text-white px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 View Product
             </a>
         </div>
@@ -65,9 +65,10 @@
 
             <div class="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                 <!-- <a href="{% url 'like' product.slug %}" id="like" data-product-slug="{{ product.slug }}" class="bg-orange-500 rounded text-end p-2 m-80 ">Like</a> -->
-                <button id="like" data-product-slug="{{ product.slug }}" class="bg-orange-500 rounded text-end p-2 ">Like</button>
                 <a href="{% url 'product_detail' product.slug %}">
-                    <img src="{{ product.img.url }}" class="w-full h-48 object-cover" alt="">
+                    <div>
+                        <img src="{{ product.img.url }}" class="w-full h-48 object-cover" alt="">
+                    </div>
                     <div class="p-4">
                         <div class="text-lg font-bold text-gray-800" >{{ product.title  }}</div>
                         <p class="mt-2 text-gray-600">
