@@ -81,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "website.settings.google_analytics",
             ],
         },
     },
@@ -176,3 +177,8 @@ LOGOUT_URL = 'logout'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+GOOGLE_ANALYTICS_ID = "G-6GN4ZV9C38"
+
+def google_analytics(request):
+    return {"GOOGLE_ANALYTICS_ID": GOOGLE_ANALYTICS_ID}

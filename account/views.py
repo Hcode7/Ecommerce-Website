@@ -11,22 +11,17 @@ from django.contrib.auth.views import LoginView
 def register_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
-        # user_profile = UserProfileForm(request.POST)
         if form.is_valid():
-        # and user_profile.is_valid():
-            # profile = user_profile.save(commit=False)
-            # profile.user = request.user
-            # profile.save()
-            form.save()
-            messages.success(request, 'Form submitted successfully!')
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
+            messages.success(request, 'Registration successful! You can now log in.')
             return redirect('login')
         else:
             print(form.errors)
-            # print(user_profile.errors)
             messages.error(request, 'There was an error. Please fix the highlighted fields.')
     else:
         form = RegisterForm()
-        # user_profile = UserProfileForm()
 
     return render(request, 'registration/register.html', {'form' : form})
 
