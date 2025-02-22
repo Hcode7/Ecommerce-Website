@@ -2,13 +2,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import CartItem, Cart
 
 def cartitem_counter(request):
+    if not request.user.is_authenticated:
+        return 0
     try:
-        if request.user.is_authenticated:
-            cart = Cart.objects.filter(user=request.user).first()
-        else:
-            cart = Cart.objects.filter(session_key=request.session.session_key).first()
-        if not request.user.is_authenticated:
-            return CartItem.objects.count(cart=cart)
+        cart = Cart.objects.filter(user=request.user).first()
         cart_items = CartItem.objects.filter(cart=cart)
         total_item = sum(item.quantity for item in cart_items)
         return total_item

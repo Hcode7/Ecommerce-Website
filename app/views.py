@@ -6,7 +6,6 @@ from .forms import *
 import stripe
 from django.conf import settings
 from django.db.models import Sum, F, Count
-from django.db.models.functions import Coalesce
 
 # Create your views here.
 
