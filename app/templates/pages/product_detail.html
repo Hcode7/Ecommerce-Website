@@ -11,7 +11,13 @@
             <h3 class="text-2xl font-bold text-gray-800">{{ product.title }}</h3>
             <hr class="my-4 border-gray-300">
             <p class="text-lg text-gray-600">{{ product.description }}</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-4">${{ product.price }}</h4>
+            <br>
+            <span class="absolute  text-right bg-white px-2 py-1 text-xl text-gray-800 shadow rounded font-bold 
+            bg-clip-text text-transparent 
+            bg-gradient-to-r from-red-500 bg-gray-200 bg-via-yellow-500 to-blue-500">
+                ${{ product.price }}
+            </span>
+            <br>
             <br>
             <div class="mt-600">
                 <!-- <a  href="{% url 'add_cart' product.slug %}" class="inline-block px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 hover:text-white text-lg font-medium rounded-lg shadow">
