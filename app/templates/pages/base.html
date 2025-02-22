@@ -114,6 +114,15 @@
         const countcart = '{{ count_cart }}'
         const csrftoken = "{{ csrf_token }}";
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6GN4ZV9C38"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6GN4ZV9C38');
+    </script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
